@@ -1,13 +1,11 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
 namespace AutomationEx.Selenium.Tests.Fixtures;
 
 [Parallelizable(ParallelScope.Self)]
 public abstract class BaseUiTest
 {
-    protected const string BaseUrl = "https://automationexercise.com";
     private static readonly string[] BlockedUrls = [
         "*googlesyndication.com*",
         "*doubleclick.net*",
@@ -15,7 +13,6 @@ public abstract class BaseUiTest
         "*adservice.google.com*"
     ];
     protected IWebDriver Driver = null!;
-    protected WebDriverWait Wait = null!;
 
     [SetUp]
     protected void StartBrowser()
@@ -35,15 +32,8 @@ public abstract class BaseUiTest
         });
 
         Driver = driver;
-        Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
     }
 
     [TearDown]
-    public void QuitBrowser()
-    {
-        Driver?.Quit();
-        Driver?.Dispose();
-    }
-
-    protected static By TestId(string id) => By.CssSelector($"[data-qa='{id}']");
+    public void QuitBrowser() => Driver?.Dispose();
 }
